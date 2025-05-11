@@ -47,7 +47,7 @@ spec:
       - name: laravelapps
         image: krishnamoorthy1/lamp-new:253
         ports:
-        - containerPort: 8000
+        - containerPort: 80
         env:
         - name: DB_USERNAME
           value: "aduser"
@@ -75,7 +75,7 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - port: 8000
-    targetPort: 8000
+  - port: 80
+    targetPort: 80
   selector:
     app: laravel-web        
