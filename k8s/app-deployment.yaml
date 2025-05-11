@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: laravel-pv
+  labels:
+    type: local
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/home/pinnacleseven/Documents/lamp-ticket/laravel"
+    
+---      
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: laravel-pvc
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: laravel-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: laravel-web
+  template:
+    metadata:
+      labels:
+        app: laravel-web
+    spec:
+      containers:
+      - name: laravelapps
+        image: krishnamoorthy1/lamp-new:252
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DB_USERNAME
+          value: "aduser"
+        - name: DB_DATABASE
+          value: "laravel"
+        - name: DB_PASSWORD
+          value: "aduser"  # Consider using secrets for passwords
+        - name: DB_HOST
+          value: "13.233.128.222"
+        - name: DB_PORT
+          value: "3306"
+        volumeMounts:
+        - name: laravel-storage
+          mountPath: /var/www/html  # Changed to standard Laravel path
+      volumes:      # Moved volumes to correct level
+      - name: laravel-storage
+        persistentVolumeClaim:
+          claimName: laravel-pvc
+          
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: laravel-web
+spec:
+  type: NodePort
+  ports:
+  - port: 8000
+    targetPort: 8000
+  selector:
+    app: laravel-web        
