@@ -46,7 +46,7 @@ spec:
     spec:
       containers:
       - name: laravel-application
-        image: krishnamoorthy1/lamp-new:265
+        image: krishnamoorthy1/lamp-new:266
      #   command: ["php", "artisan", "serve"]
      #   args: ["--host=0.0.0.0", "--port=8000"]
         ports:
