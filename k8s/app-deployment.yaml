@@ -11,7 +11,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/home/pinnacleseven/Documents/lamp-ticket/laravel"
+    path: "/home/pinnacleseven/Documents/lamp-ticket/laravel/storage"
     
 ---      
 
@@ -63,7 +63,7 @@ spec:
           value: "3306"
         volumeMounts:
         - name: laravel-storage
-          mountPath: /var/www/html  # Changed to standard Laravel path
+          mountPath: /var/www/html/storage  # Changed to standard Laravel path
       volumes:      # Moved volumes to correct level
       - name: laravel-storage
         persistentVolumeClaim:
